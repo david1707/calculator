@@ -8,9 +8,9 @@ pipeline {
         }
         stage("Testing") {
             steps {
-                //sh "python3 -m unittest test_calculator"
                 sh "coverage run -m unittest test_calculator"
                 sh "coverage report"
+                //sh "python3 -m unittest test_calculator"
             }
         }
     }
