@@ -1,17 +1,21 @@
 pipeline {
     agent any
     stages {
-        stage("Checkout") {
-            steps {
-                sh "python3 --version"
-            }
+        stage('Checkout repo') {
+           steps {
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[credentialsId: 'GitHub-Tokens', url: 'https://github.com/david1707/calculator.git']])
+                sh "python3 -V"
+           }
         }
-        stage("Testing") {
-            steps {
-                sh "coverage run -m unittest test_calculator"
-                sh "coverage report"
-                //sh "python3 -m unittest test_calculator"
-            }
+        stage('Downloading repo') {
+           steps {
+                git branch: 'main', url: 'https://github.com/david1707/calculator.git'
+           }
+        }
+        stage('Testing') {
+           steps {
+                sh 'python3 -m pytest'
+           }
         }
     }
 }
